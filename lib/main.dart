@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:miambo/remera_painter.dart';
-import 'package:path_drawing/path_drawing.dart';
-import 'dart:ui';
+import 'package:miambo/colores_provider/colores_provider.dart';
 
-import 'bolsillo_painter.dart';
-import 'circle_painter.dart';
-import 'mypainter.dart';
-import 'square_painter.dart';
-import 'square_painter2.dart';
+import 'package:miambo/elcabezon.dart';
+import 'package:miambo/ropa/bolsillo_cabezon.dart';
+import 'package:miambo/ropa/chaqueta_cabezon.dart';
+import 'package:miambo/ropa/pantalon_cabezon.dart';
+import 'package:miambo/widgets/colores.dart';
+import 'package:miambo/widgets/ropa_switch.dart';
+import 'package:provider/provider.dart';
+import 'package:toggle_switch/toggle_switch.dart';
 
 void main() {
   runApp(MyApp());
@@ -21,19 +22,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      theme: ThemeData(),
+      home: ChangeNotifierProvider(
+          create: (context) => ColoresProvider(),
+          child: const MyHomePage(title: 'Diseña tu Ambo')),
     );
   }
 }
@@ -57,125 +49,84 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  Color squareColor = Colors.black;
-  Color circleColor = Colors.black;
-  bool squareFill = false;
-  bool circleFill = false;
-  // late Path _selectedPath;
-  List<Color> _colors = [Colors.red, Colors.green, Colors.blue];
+  Color colorSeleccioando = Colors.green;
+
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-
     return Scaffold(
         appBar: AppBar(
-          // Here we take the value from the MyHomePage object that was created by
-          // the App.build method, and use it to set our appbar title.
+          backgroundColor: Colors.indigo,
           title: Text(widget.title),
+          centerTitle: true,
         ),
         body: Padding(
-          padding: EdgeInsets.all(50),
+          padding: const EdgeInsets.all(8),
           child: SizedBox(
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Draggable<Color>(
-                        data: Colors.red,
-                        child: Container(
-                          width: 50,
-                          height: 50,
-                          color: Colors.red,
-                        ),
-                        feedback: Container(
-                          width: 50,
-                          height: 50,
-                          color: Colors.red.withOpacity(0.5),
-                        ),
-                        childWhenDragging: Container(),
-                      ),
-                      Draggable<Color>(
-                        data: Colors.green,
-                        child: Container(
-                          width: 50,
-                          height: 50,
-                          color: Colors.green,
-                        ),
-                        feedback: Container(
-                          width: 50,
-                          height: 50,
-                          color: Colors.green.withOpacity(0.5),
-                        ),
-                        childWhenDragging: Container(),
-                      ),
-                      Draggable<Color>(
-                        data: Colors.blue,
-                        child: Container(
-                          width: 50,
-                          height: 50,
-                          color: Colors.blue,
-                        ),
-                        feedback: Container(
-                          width: 50,
-                          height: 50,
-                          color: Colors.blue.withOpacity(0.5),
-                        ),
-                        childWhenDragging: Container(),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 20),
-                  Stack(
-                    children: [
-                      DragTarget(
-                        builder: (BuildContext context,
-                            List<Color?> candidateData,
-                            List<dynamic> rejectedData) {
-                          return CustomPaint(
-                            size: Size(800, 600),
-                            painter: RemeraPainter(squareColor, squareFill),
-                          );
-                        },
-                        onLeave: (data) {},
-                        onWillAccept: (Color? color) {
-                          return true;
-                        },
-                        onAccept: (Color color) {
-                          setState(() {
-                            squareColor = color;
-                            squareFill = true;
-                          });
-                        },
-                      ),
-                      DragTarget<Color>(
-                        builder: (BuildContext context,
-                            List<Color?> candidateData,
-                            List<dynamic> rejectedData) {
-                          return CustomPaint(
-                            size: Size(800, 600),
-                            painter: BolsilloPainter(circleColor, circleFill),
-                          );
-                        },
-                        onWillAccept: (Color? color) {
-                          return false;
-                        },
-                        onAccept: (Color color) {
-                          setState(() {
-                            circleColor = color;
-                            circleFill = true;
-                          });
-                        },
-                      ),
-                    ],
-                  )
-                ],
-              ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ToogleSSwitch(),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Painter(),
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Expanded(
+                  child: Container(
+                      color: Color.fromARGB(31, 152, 149, 149),
+                      child: Colores()),
+                ),
+              ],
             ),
           ),
-          // This trailing comma makes auto-formatting nicer for build methods.
         ));
+  }
+}
+
+class Painter extends StatefulWidget {
+  const Painter({
+    super.key,
+  });
+
+  @override
+  State<Painter> createState() => _PainterState();
+}
+
+class _PainterState extends State<Painter> {
+  @override
+  Widget build(BuildContext context) {
+    final coloresProvider = context.watch<ColoresProvider>();
+    return Stack(
+      children: [
+        CustomPaint(
+          size: Size(120, (120 * 3.0117051013277427).toDouble()),
+          painter: ElCabezonPainter(
+              colorBolsillo: coloresProvider.bolsilloColor,
+              colorChaqueta: coloresProvider.chaquetaColor,
+              colorDetalles: coloresProvider.detallesColor,
+              colorPantalon: coloresProvider.pantalonColor),
+        ),
+        CustomPaint(
+          size: Size(120, (120 * 3.0117051013277427).toDouble()),
+          painter: PantalonCabezon(coloresProvider.pantalonColor),
+        ),
+        CustomPaint(
+          size: Size(120, (120 * 3.0117051013277427).toDouble()),
+          painter: ChaquetaCabezon(coloresProvider.chaquetaColor),
+        ),
+        CustomPaint(
+          size: Size(120, (120 * 3.0117051013277427).toDouble()),
+          painter: BolsilloCabezon(coloresProvider.bolsilloColor),
+        )
+      ],
+    );
   }
 }
