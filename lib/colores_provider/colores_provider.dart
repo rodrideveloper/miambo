@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class ColoresProvider extends ChangeNotifier {
-  Color pantalonColor = Colors.transparent;
-  Color bolsilloColor = Colors.transparent;
-  Color chaquetaColor = Colors.transparent;
-  Color detallesColor = Colors.transparent;
+  Color pantalonColor = Colors.black;
+  Color bolsilloColor = Colors.yellow;
+  Color chaquetaColor = Colors.black;
+  Color detallesColor = Colors.yellow;
   Color seleccionado = Colors.transparent;
   int selected = 0;
 

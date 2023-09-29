@@ -3,8 +3,8 @@ import 'package:miambo/colores_provider/colores_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
-class ToogleSSwitch extends StatelessWidget {
-  const ToogleSSwitch({
+class RopaSwitch extends StatelessWidget {
+  const RopaSwitch({
     super.key,
   });
 
