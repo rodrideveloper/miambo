@@ -81,7 +81,7 @@ flutter:
     - assets/svg/details.svg
     - assets/icon/icon.png
     - assets/icon/splash.png
-    - assets/svg/whatsapp_button.png
+    - assets/svg/whatsapp_button.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

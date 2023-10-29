@@ -38,23 +38,23 @@ class _AmboScreenState extends State<AmboScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          centerTitle: true,
+          title: Text(widget.model.name.toUpperCase(),
+              style: GoogleFonts.cinzel(
+                fontSize: 30,
+                color: Colors.black,
+              )),
           backgroundColor: Colors.white,
           elevation: 0,
-          iconTheme: IconThemeData(color: Colors.grey, size: 45),
+          iconTheme: IconThemeData(color: Colors.grey, size: 50),
         ),
         body: Container(
           color: Colors.white,
           child: Column(
             children: [
-              Padding(
-                padding: EdgeInsets.all(10),
-                child: Text(widget.model.name.toUpperCase(),
-                    style: GoogleFonts.cinzel(fontSize: 40)),
-              ),
               Expanded(
                 child: Container(
                   padding: EdgeInsets.all(20),
-                  color: Colors.white,
                   child: Column(
                     children: [
                       Expanded(
@@ -71,7 +71,7 @@ class _AmboScreenState extends State<AmboScreen> {
                                           chaquetaColor: state.chaqueta,
                                           detallesColor: state.detalle,
                                           pantalonColor: state.pantalon,
-                                          bolsilloColor: state.bolsillo,
+                                          bolsilloColor: state.detalle,
                                         ))
                                     : Align(
                                         alignment: Alignment.center,
@@ -81,19 +81,22 @@ class _AmboScreenState extends State<AmboScreen> {
                                           chaquetaColor: state.chaqueta,
                                           detallesColor: state.detalle,
                                           pantalonColor: state.pantalon,
-                                          bolsilloColor: state.bolsillo,
+                                          bolsilloColor: state.detalle,
                                         ));
                               },
                             ),
                             Positioned(
                               bottom: 0,
-                              right: 0,
+                              right: -20,
                               child: SizedBox(
                                 width: 150,
                                 child: MaterialButton(
                                   padding: EdgeInsets.all(0),
-                                  child: Image.asset(
-                                    'assets/svg/whatsapp_button.png',
+                                  child: SvgPicture.asset(
+                                    'assets/svg/whatsapp_button.svg',
+                                    semanticsLabel: 'My SVG Image',
+                                    height: 40,
+                                    width: 60,
                                   ),
                                   onPressed: () {
                                     final link = WhatsAppUnilink(
@@ -110,6 +113,7 @@ class _AmboScreenState extends State<AmboScreen> {
                               bottom: 150,
                               right: 10,
                               child: FloatingActionButton(
+                                heroTag: '1',
                                 backgroundColor: Colors.white,
                                 child: Icon(
                                   Icons.arrow_outward,
@@ -127,6 +131,7 @@ class _AmboScreenState extends State<AmboScreen> {
                               bottom: 60,
                               right: 10,
                               child: FloatingActionButton(
+                                heroTag: '2',
                                 backgroundColor: Colors.white,
                                 child: Icon(
                                   Icons.not_interested,
@@ -143,13 +148,6 @@ class _AmboScreenState extends State<AmboScreen> {
                             Positioned(
                               bottom: 10,
                               child: Column(children: [
-                                ClothesButton(
-                                  bloc: bloc,
-                                  selectedClothing: SelectedClothing.pocket,
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
                                 ClothesButton(
                                   bloc: bloc,
                                   selectedClothing: SelectedClothing.details,
@@ -309,44 +307,47 @@ class ClothesButton extends StatelessWidget {
     return BlocBuilder<AmboBloc, AmboState>(
       builder: (context, state) {
         final isSelected = state.selectedClothing == selectedClothing;
-        return Container(
-          decoration: isSelected
-              ? BoxDecoration(
-                  borderRadius: BorderRadius.circular(16.0),
-                  gradient: RadialGradient(
-                    colors: [
-                      Colors.transparent,
-                      Colors.white.withOpacity(0.5),
-                    ],
-                    stops: [0.5, 1.0],
-                    center: Alignment(0.5, 0.5),
-                    radius: 0.7,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: state.selectedColor,
-                      blurRadius: 10.0,
-                      spreadRadius: 2.0,
+        return Padding(
+          padding: EdgeInsets.all(8),
+          child: Container(
+            decoration: isSelected
+                ? BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                    gradient: RadialGradient(
+                      colors: [
+                        Colors.transparent,
+                        Colors.white.withOpacity(0.5),
+                      ],
+                      stops: [0.5, 1.0],
+                      center: Alignment(0.5, 0.5),
+                      radius: 0.7,
                     ),
-                  ],
-                )
-              : BoxDecoration(),
-          child: FloatingActionButton(
-            backgroundColor: Colors.white,
-            heroTag: {selectedClothing},
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(16.0)),
-            ),
-            onPressed: () {
-              bloc.add(ChangeColor(
-                selectedClothing: selectedClothing,
-              ));
-            },
-            child: Padding(
-              padding: EdgeInsets.all(8),
-              child: SvgPicture.asset(
-                width: 30,
-                'assets/svg/${selectedClothing.name.toString()}.svg',
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.amberAccent,
+                          blurRadius: 10.0,
+                          spreadRadius: 2),
+                    ],
+                  )
+                : BoxDecoration(),
+            child: FloatingActionButton(
+              elevation: isSelected ? 0 : null,
+              backgroundColor: Colors.white,
+              heroTag: {selectedClothing},
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(16.0)),
+              ),
+              onPressed: () {
+                bloc.add(ChangeColor(
+                  selectedClothing: selectedClothing,
+                ));
+              },
+              child: Padding(
+                padding: EdgeInsets.all(8),
+                child: SvgPicture.asset(
+                  width: 30,
+                  'assets/svg/${selectedClothing.name.toString()}.svg',
+                ),
               ),
             ),
           ),

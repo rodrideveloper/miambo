@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:miambo/ambo_screen.dart';
 import 'package:miambo/bloc/bloc/ambo_bloc.dart';
 import 'package:miambo/utils.dart';
@@ -49,30 +50,41 @@ class _BuildModelState extends State<BuildModel> {
                 ),
               ),
             ),
-        child: Stack(
+        child: Column(
           children: [
-            Align(
-              alignment: Alignment.center,
-              child: Card(
-                elevation: 10,
-                child: Container(
-                  padding: EdgeInsets.all(50),
-                  child: Image.asset(widget.modelImage),
-                ),
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: Text(widget.model.name,
+                  style: GoogleFonts.cinzel(fontSize: 40)),
+            ),
+            Expanded(
+              child: Stack(
+                children: [
+                  Align(
+                    alignment: Alignment.center,
+                    child: Card(
+                      elevation: 10,
+                      child: Container(
+                        padding: EdgeInsets.all(50),
+                        child: Image.asset(widget.modelImage),
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: EdgeInsets.only(bottom: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ..._buildPageIndicator(),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
               ),
             ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: EdgeInsets.only(bottom: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ..._buildPageIndicator(),
-                  ],
-                ),
-              ),
-            )
           ],
         ));
   }
