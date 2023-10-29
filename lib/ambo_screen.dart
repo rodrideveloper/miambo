@@ -1,175 +1,319 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:miambo/models/juanita_grey.dart/juanita_grey_delante.dart';
-import 'package:miambo/models/juanita_grey_espalda.dart';
+import 'package:miambo/bloc/bloc/ambo_bloc.dart';
 
-import 'colores.dart';
+import 'package:miambo/models/juanita_grey/juanita_grey_delante.dart';
+import 'package:miambo/models/juanita_grey/juanita_grey_espalda.dart';
+import 'package:miambo/models/leontina/leontina_deltante.dart';
+import 'package:miambo/models/leontina/leontina_espalda.dart';
+import 'package:miambo/models/profesional/profesional_atras.dart';
+import 'package:miambo/models/profesional/profesional_delante.dart';
+import 'package:miambo/utils.dart';
+import 'package:miambo/widgets/colors_panel.dart';
 
 class AmboScreen extends StatefulWidget {
-  const AmboScreen({super.key});
+  AmboScreen({
+    super.key,
+    required this.model,
+  });
+  final Models model;
 
   @override
   State<AmboScreen> createState() => _AmboScreenState();
 }
 
 class _AmboScreenState extends State<AmboScreen> {
-  Color chaquetaColor = Colors.blueGrey;
-  Color pantalonColor = Colors.blueGrey;
-  Color bolsilloColor = Colors.purple;
-  Color detallesColor = Colors.purple;
-
   bool isBack = false;
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final width = size.width * 0.5;
+    final bloc = context.read<AmboBloc>();
 
     return SafeArea(
       child: Container(
-        padding: EdgeInsets.all(20),
         color: Colors.white,
-        child: Stack(
+        child: Column(
           children: [
-            isBack
-                ? CustomPaint(
-                    size: Size(size.width,
-                        (size.width * 3.2419592840155254).toDouble()),
-                    painter: JuanitaGreyEspalda(
-                      detalleColor: detallesColor,
-                      pantalonColor: pantalonColor,
-                      chaquetaColor: chaquetaColor,
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.all(20),
+                color: Colors.white,
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: Stack(
+                        children: [
+                          BlocBuilder<AmboBloc, AmboState>(
+                            builder: (context, state) {
+                              return isBack
+                                  ? Align(
+                                      alignment: Alignment.center,
+                                      child: getModelBack(
+                                        width,
+                                        widget.model,
+                                        chaquetaColor: state.chaqueta,
+                                        detallesColor: state.detalle,
+                                        pantalonColor: state.pantalon,
+                                        bolsilloColor: state.bolsillo,
+                                      ))
+                                  : Align(
+                                      alignment: Alignment.center,
+                                      child: getModelFront(
+                                        width,
+                                        widget.model,
+                                        chaquetaColor: state.chaqueta,
+                                        detallesColor: state.detalle,
+                                        pantalonColor: state.pantalon,
+                                        bolsilloColor: state.bolsillo,
+                                      ));
+                            },
+                          ),
+                          Positioned(
+                            bottom: 150,
+                            right: 10,
+                            child: FloatingActionButton(
+                              backgroundColor: Colors.white,
+                              child: Icon(
+                                Icons.arrow_outward,
+                                size: 30,
+                                color: Colors.black,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  isBack = !isBack;
+                                });
+                              },
+                            ),
+                          ),
+                          Positioned(
+                            bottom: 60,
+                            right: 10,
+                            child: FloatingActionButton(
+                              backgroundColor: Colors.white,
+                              child: Icon(
+                                Icons.not_interested,
+                                size: 30,
+                                color: Colors.black,
+                              ),
+                              onPressed: () {
+                                bloc.add(ChangeColor(
+                                  selectedClothing: SelectedClothing.initial,
+                                ));
+                              },
+                            ),
+                          ),
+                          Positioned(
+                            bottom: 10,
+                            child: Column(children: [
+                              ClothesButton(
+                                bloc: bloc,
+                                selectedClothing: SelectedClothing.pocket,
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              ClothesButton(
+                                bloc: bloc,
+                                selectedClothing: SelectedClothing.details,
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              ClothesButton(
+                                bloc: bloc,
+                                selectedClothing: SelectedClothing.shirt,
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              ClothesButton(
+                                bloc: bloc,
+                                selectedClothing: SelectedClothing.pants,
+                              ),
+                            ]),
+                          )
+                        ],
+                      ),
                     ),
-                  )
-                : CustomPaint(
-                    size: Size(
-                        size.width, (size.width * 3.23151559005394).toDouble()),
-                    painter: JuanitaGreyDelante(
-                      pantalonColor,
-                      chaquetaColor,
-                      detallesColor,
-                      bolsilloColor,
-                    )),
-            Positioned(
-              bottom: 150,
-              right: 10,
-              child: FloatingActionButton(
-                backgroundColor: Colors.white70,
-                child: Icon(
-                  Icons.arrow_outward,
-                  size: 30,
-                  color: Colors.black,
+                  ],
                 ),
-                onPressed: () {
-                  setState(() {
-                    isBack = !isBack;
-                  });
-                },
               ),
             ),
-            Positioned(
-              bottom: 10,
-              child: Column(children: [
-                FloatingActionButton(
-                  backgroundColor: Colors.white70,
-                  heroTag: '1',
-                  onPressed: () => Navigator.of(context)
-                      .push(_createRoute(setBolsillosColor)),
-                  child: Padding(
-                    padding: EdgeInsets.all(8),
-                    child: SvgPicture.asset(
-                      width: 30,
-                      'assets/svg/pocket.svg',
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                FloatingActionButton(
-                  backgroundColor: Colors.white70,
-                  heroTag: '2',
-                  onPressed: () => Navigator.of(context)
-                      .push(_createRoute(setDetallesColor)),
-                  child: Padding(
-                    padding: EdgeInsets.all(8),
-                    child: SvgPicture.asset(
-                      width: 30,
-                      'assets/svg/details.svg',
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                FloatingActionButton(
-                  backgroundColor: Colors.white70,
-                  heroTag: '3',
-                  onPressed: () => Navigator.of(context)
-                      .push(_createRoute(setChaquetaColor)),
-                  child: Padding(
-                    padding: EdgeInsets.all(8),
-                    child: SvgPicture.asset(
-                      'assets/svg/shirt.svg',
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                FloatingActionButton(
-                  backgroundColor: Colors.white70,
-                  heroTag: '4',
-                  onPressed: () => Navigator.of(context)
-                      .push(_createRoute(setPantalonColor)),
-                  child: Padding(
-                    padding: EdgeInsets.all(8),
-                    child: SvgPicture.asset(
-                      'assets/svg/pants.svg',
-                    ),
-                  ),
-                )
-              ]),
-            )
+            BlocBuilder<AmboBloc, AmboState>(builder: (context, state) {
+              if (state.selectedClothing == SelectedClothing.initial) {
+                return SizedBox.shrink();
+              }
+              return ColorsPanel();
+            })
           ],
         ),
       ),
     );
   }
 
-  void setChaquetaColor(Color colorNuevo) {
-    chaquetaColor = colorNuevo;
-    setState(() {});
+  Widget getModelFront(
+    double width,
+    Models model, {
+    required Color bolsilloColor,
+    required Color chaquetaColor,
+    required Color detallesColor,
+    required Color pantalonColor,
+  }) {
+    switch (model) {
+      case Models.juanita:
+        return CustomPaint(
+          size: Size(width, (width * 3.23151559005394).toDouble()),
+          painter: JuanitaGreyDelante(
+            bolsillo: bolsilloColor,
+            colorChaqueta: chaquetaColor,
+            pantalon: pantalonColor,
+            detalles: detallesColor,
+          ),
+        );
+      case Models.profesional:
+        return CustomPaint(
+          size: Size(width, (width * 3.2160278486748743).toDouble()),
+          painter: ProfesionalDeltante(
+            colorBolsillo: bolsilloColor,
+            colorChaqueta: chaquetaColor,
+            colorPantalon: pantalonColor,
+            colorDetalle: detallesColor,
+          ),
+        );
+      case Models.leontina:
+        return CustomPaint(
+          size: Size(width, (width * 3.4660738738316677).toDouble()),
+          painter: LeontinaDelante(
+            colorChaqueta: chaquetaColor,
+            colorPantalon: pantalonColor,
+            colorDetalle: detallesColor,
+          ),
+        );
+      default:
+        return CustomPaint(
+          size: Size(width, (width * 3.23151559005394).toDouble()),
+          painter: JuanitaGreyDelante(
+            bolsillo: bolsilloColor,
+            colorChaqueta: chaquetaColor,
+            pantalon: pantalonColor,
+            detalles: detallesColor,
+          ),
+        );
+    }
   }
 
-  void setPantalonColor(Color colorNuevo) {
-    pantalonColor = colorNuevo;
-    setState(() {});
+  Widget getModelBack(
+    double width,
+    Models model, {
+    required Color bolsilloColor,
+    required Color chaquetaColor,
+    required Color detallesColor,
+    required Color pantalonColor,
+  }) {
+    switch (model) {
+      case Models.juanita:
+        return CustomPaint(
+          size: Size(width, (width * 3.2419592840155254).toDouble()),
+          painter: JuanitaGreyEspalda(
+            detalleColor: detallesColor,
+            pantalonColor: pantalonColor,
+            chaquetaColor: chaquetaColor,
+          ),
+        );
+      case Models.profesional:
+        return CustomPaint(
+          size: Size(width, (width * 3.2162606212413505).toDouble()),
+          painter: ProfesionalAtras(
+            colorBolsillo: bolsilloColor,
+            colorChaqueta: chaquetaColor,
+            colorPantalon: pantalonColor,
+            colorDetalle: detallesColor,
+          ),
+        );
+
+      case Models.leontina:
+        return CustomPaint(
+          size: Size(width, (width * 3.446868688008983).toDouble()),
+          painter: LeontinaEspalda(
+            colorBolsillo: bolsilloColor,
+            colorChaqueta: chaquetaColor,
+            colorPantalon: pantalonColor,
+            colorDetalle: detallesColor,
+          ),
+        );
+
+      default:
+        return CustomPaint(
+          size: Size(width, (width * 3.2419592840155254).toDouble()),
+          painter: JuanitaGreyEspalda(
+            detalleColor: detallesColor,
+            pantalonColor: pantalonColor,
+            chaquetaColor: chaquetaColor,
+          ),
+        );
+    }
   }
+}
 
-  void setBolsillosColor(Color colorNuevo) {
-    bolsilloColor = colorNuevo;
-    setState(() {});
-  }
+class ClothesButton extends StatelessWidget {
+  const ClothesButton({
+    super.key,
+    required this.bloc,
+    required this.selectedClothing,
+  });
 
-  void setDetallesColor(Color colorNuevo) {
-    detallesColor = colorNuevo;
-    setState(() {});
-  }
+  final AmboBloc bloc;
+  final SelectedClothing selectedClothing;
 
-  Route _createRoute(Function cambiarColor) {
-    return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) =>
-          ColoresArciel(cambiarColor),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        const begin = Offset(0.0, 1.0);
-        const end = Offset.zero;
-        const curve = Curves.ease;
-
-        var tween =
-            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-        return SlideTransition(
-          position: animation.drive(tween),
-          child: child,
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AmboBloc, AmboState>(
+      builder: (context, state) {
+        final isSelected = state.selectedClothing == selectedClothing;
+        return Container(
+          decoration: isSelected
+              ? BoxDecoration(
+                  borderRadius: BorderRadius.circular(16.0),
+                  gradient: RadialGradient(
+                    colors: [
+                      Colors.transparent,
+                      Colors.white.withOpacity(0.5),
+                    ],
+                    stops: [0.5, 1.0],
+                    center: Alignment(0.5, 0.5),
+                    radius: 0.7,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: state.selectedColor,
+                      blurRadius: 10.0,
+                      spreadRadius: 2.0,
+                    ),
+                  ],
+                )
+              : BoxDecoration(),
+          child: FloatingActionButton(
+            backgroundColor: Colors.white,
+            heroTag: {selectedClothing},
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(16.0)),
+            ),
+            onPressed: () {
+              bloc.add(ChangeColor(
+                selectedClothing: selectedClothing,
+              ));
+            },
+            child: Padding(
+              padding: EdgeInsets.all(8),
+              child: SvgPicture.asset(
+                width: 30,
+                'assets/svg/${selectedClothing.name.toString()}.svg',
+              ),
+            ),
+          ),
         );
       },
     );
