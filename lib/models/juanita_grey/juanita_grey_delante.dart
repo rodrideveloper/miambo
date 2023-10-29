@@ -8,7 +8,10 @@ class JuanitaGreyDelante extends CustomPainter {
   final Color bolsillo;
 
   JuanitaGreyDelante(
-      this.pantalon, this.colorChaqueta, this.detalles, this.bolsillo);
+      {required this.pantalon,
+      required this.colorChaqueta,
+      required this.detalles,
+      required this.bolsillo});
   @override
   void paint(Canvas canvas, Size size) {
     Path path_0 = Path();
