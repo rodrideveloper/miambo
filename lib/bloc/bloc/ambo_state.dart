@@ -1,12 +1,12 @@
 part of 'ambo_bloc.dart';
 
-enum SelectedClothing { initial, shirt, pants, details, pocket }
+enum SelectedClothing { initial, shirt, pants, details }
 
 @immutable
 class AmboState extends Equatable {
   final Color chaqueta;
   final Color pantalon;
-  final Color bolsillo;
+
   final Color detalle;
   final SelectedClothing selectedClothing;
   final Color selectedColor;
@@ -15,7 +15,6 @@ class AmboState extends Equatable {
     required this.selectedClothing,
     required this.chaqueta,
     required this.pantalon,
-    required this.bolsillo,
     required this.detalle,
     required this.selectedColor,
   });
@@ -23,7 +22,6 @@ class AmboState extends Equatable {
   AmboState copyWith({
     Color? chaqueta,
     Color? pantalon,
-    Color? bolsillo,
     Color? detalle,
     SelectedClothing? selectedClothing,
     Color? selectedColor,
@@ -33,13 +31,11 @@ class AmboState extends Equatable {
       selectedClothing: selectedClothing ?? this.selectedClothing,
       chaqueta: chaqueta ?? this.chaqueta,
       pantalon: pantalon ?? this.pantalon,
-      bolsillo: bolsillo ?? this.bolsillo,
       detalle: detalle ?? this.detalle,
     );
   }
 
   @override
-  // TODO: implement props
   List<Object?> get props =>
-      [selectedColor, selectedClothing, chaqueta, pantalon, bolsillo, detalle];
+      [selectedColor, selectedClothing, chaqueta, pantalon, detalle];
 }

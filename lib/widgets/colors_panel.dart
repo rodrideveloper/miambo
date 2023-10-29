@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:miambo/bloc/bloc/ambo_bloc.dart';
-import 'package:provider/provider.dart';
 
 class ColorsPanel extends StatefulWidget {
   ColorsPanel({
@@ -20,6 +20,12 @@ class _ColorsPanelState extends State<ColorsPanel>
   void deactivate() {
     _controller.reverse();
     super.deactivate();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -139,14 +145,44 @@ class ColorList extends StatelessWidget {
           onTap: () {
             bloc.add(ChangeColor(selectedColor: colors[index]));
           },
-          child: Container(
-            height: 50,
-            width: 50,
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.black, width: 1),
-              shape: BoxShape.circle,
-              color: colors[index],
-            ),
+          child: BlocBuilder<AmboBloc, AmboState>(
+            builder: (context, state) {
+              final isSelected = colors[index] == state.selectedColor;
+              return Container(
+                child: ClipOval(
+                  child: Container(
+                    color: colors[index],
+                  ),
+                ),
+                height: 50,
+                width: 50,
+                decoration: isSelected
+                    ? BoxDecoration(
+                        border: Border.all(color: Colors.black, width: 1),
+                        shape: BoxShape.circle,
+                        gradient: RadialGradient(
+                          colors: [
+                            Colors.transparent,
+                            Colors.white.withOpacity(0.5),
+                          ],
+                          stops: [0.5, 1.0],
+                          center: Alignment(0.5, 0.5),
+                          radius: 0.7,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.amberAccent,
+                            blurRadius: 10.0,
+                            spreadRadius: 3.0,
+                          ),
+                        ],
+                      )
+                    : BoxDecoration(
+                        border: Border.all(color: Colors.black, width: 1),
+                        shape: BoxShape.circle,
+                      ),
+              );
+            },
           ),
         ),
       ),
