@@ -12,8 +12,7 @@ import 'package:miambo/models/profesional/profesional_atras.dart';
 import 'package:miambo/models/profesional/profesional_delante.dart';
 import 'package:miambo/utils.dart';
 import 'package:miambo/widgets/colors_panel.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:whatsapp_unilink/whatsapp_unilink.dart';
+import 'package:miambo/widgets/whatsapp_button.dart';
 
 class AmboScreen extends StatefulWidget {
   AmboScreen({
@@ -39,11 +38,6 @@ class _AmboScreenState extends State<AmboScreen> {
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: Text(widget.model.name.toUpperCase(),
-              style: GoogleFonts.cinzel(
-                fontSize: 30,
-                color: Colors.black,
-              )),
           backgroundColor: Colors.white,
           elevation: 0,
           iconTheme: IconThemeData(color: Colors.grey, size: 50),
@@ -52,6 +46,11 @@ class _AmboScreenState extends State<AmboScreen> {
           color: Colors.white,
           child: Column(
             children: [
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: Text(widget.model.name,
+                    style: GoogleFonts.cinzel(fontSize: 40)),
+              ),
               Expanded(
                 child: Container(
                   padding: EdgeInsets.all(20),
@@ -88,26 +87,7 @@ class _AmboScreenState extends State<AmboScreen> {
                             Positioned(
                               bottom: 0,
                               right: -20,
-                              child: SizedBox(
-                                width: 150,
-                                child: MaterialButton(
-                                  padding: EdgeInsets.all(0),
-                                  child: SvgPicture.asset(
-                                    'assets/svg/whatsapp_button.svg',
-                                    semanticsLabel: 'My SVG Image',
-                                    height: 40,
-                                    width: 60,
-                                  ),
-                                  onPressed: () {
-                                    final link = WhatsAppUnilink(
-                                      phoneNumber: '5492477614405',
-                                      text: "Quiero este ambo",
-                                    );
-
-                                    launchUrl(link.asUri());
-                                  },
-                                ),
-                              ),
+                              child: WhatsappButton(),
                             ),
                             Positioned(
                               bottom: 150,

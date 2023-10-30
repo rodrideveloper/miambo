@@ -43,7 +43,7 @@ class _BuildModelState extends State<BuildModel> {
         onTap: () => Navigator.of(context).push(
               createRoute3(
                 BlocProvider(
-                  create: (context) => AmboBloc(),
+                  create: (context) => AmboBloc(widget.model),
                   child: AmboScreen(
                     model: widget.model,
                   ),

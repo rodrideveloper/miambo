@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:miambo/utils.dart';
 
 part 'ambo_event.dart';
 part 'ambo_state.dart';
@@ -11,10 +12,12 @@ class AmboBloc extends Bloc<AmboEvent, AmboState> {
   Color? detalle = Colors.white;
   SelectedClothing selectedClothing = SelectedClothing.initial;
   Color? selectColor = Colors.white;
+  Models model;
 
-  AmboBloc()
+  AmboBloc(this.model)
       : super(
           AmboState(
+              model: model,
               selectedColor: Colors.black12,
               selectedClothing: SelectedClothing.initial,
               chaqueta: Colors.grey,
