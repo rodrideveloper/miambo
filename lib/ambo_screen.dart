@@ -17,9 +17,7 @@ import 'package:miambo/widgets/whatsapp_button.dart';
 class AmboScreen extends StatefulWidget {
   AmboScreen({
     super.key,
-    required this.model,
   });
-  final Models model;
 
   @override
   State<AmboScreen> createState() => _AmboScreenState();
@@ -27,12 +25,13 @@ class AmboScreen extends StatefulWidget {
 
 class _AmboScreenState extends State<AmboScreen> {
   bool isBack = false;
+  late final AmboBloc bloc = context.read<AmboBloc>();
+  late final Models model = bloc.state.model;
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final width = size.width * 0.5;
-    final bloc = context.read<AmboBloc>();
 
     return SafeArea(
       child: Scaffold(
@@ -42,127 +41,139 @@ class _AmboScreenState extends State<AmboScreen> {
           elevation: 0,
           iconTheme: IconThemeData(color: Colors.grey, size: 50),
         ),
-        body: Container(
-          color: Colors.white,
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.all(10),
-                child: Text(widget.model.name,
-                    style: GoogleFonts.cinzel(fontSize: 40)),
-              ),
-              Expanded(
-                child: Container(
-                  padding: EdgeInsets.all(20),
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: Stack(
-                          children: [
-                            BlocBuilder<AmboBloc, AmboState>(
-                              builder: (context, state) {
-                                return isBack
-                                    ? Align(
-                                        alignment: Alignment.center,
-                                        child: getModelBack(
-                                          width,
-                                          widget.model,
-                                          chaquetaColor: state.chaqueta,
-                                          detallesColor: state.detalle,
-                                          pantalonColor: state.pantalon,
-                                          bolsilloColor: state.detalle,
-                                        ))
-                                    : Align(
-                                        alignment: Alignment.center,
-                                        child: getModelFront(
-                                          width,
-                                          widget.model,
-                                          chaquetaColor: state.chaqueta,
-                                          detallesColor: state.detalle,
-                                          pantalonColor: state.pantalon,
-                                          bolsilloColor: state.detalle,
-                                        ));
-                              },
+        body: BlocBuilder<AmboBloc, AmboState>(
+          builder: (context, state) {
+            return Container(
+              child: Column(
+                children: [
+                  Expanded(
+                    child: Container(
+                      child: Column(
+                        children: [
+                          Container(
+                            child: Text(
+                              state.model.name,
+                              style: GoogleFonts.cinzel(fontSize: 40),
                             ),
-                            Positioned(
-                              bottom: 0,
-                              right: -20,
-                              child: WhatsappButton(),
+                          ),
+                          Expanded(
+                            child: Stack(
+                              children: [
+                                BlocBuilder<AmboBloc, AmboState>(
+                                  builder: (context, state) {
+                                    return isBack
+                                        ? Align(
+                                            alignment: Alignment.center,
+                                            child: getModelBack(
+                                              width,
+                                              state.model,
+                                              chaquetaColor:
+                                                  state.chaqueta.color,
+                                              detallesColor:
+                                                  state.detalle.color,
+                                              pantalonColor:
+                                                  state.pantalon.color,
+                                              bolsilloColor:
+                                                  state.detalle.color,
+                                            ),
+                                          )
+                                        : Align(
+                                            alignment: Alignment.center,
+                                            child: getModelFront(
+                                              width,
+                                              state.model,
+                                              chaquetaColor:
+                                                  state.chaqueta.color,
+                                              detallesColor:
+                                                  state.detalle.color,
+                                              pantalonColor:
+                                                  state.pantalon.color,
+                                              bolsilloColor:
+                                                  state.detalle.color,
+                                            ),
+                                          );
+                                  },
+                                ),
+                                Positioned(
+                                  bottom: 0,
+                                  right: -10,
+                                  child: WhatsappButton(),
+                                ),
+                                Positioned(
+                                  bottom: 150,
+                                  right: 10,
+                                  child: FloatingActionButton(
+                                    heroTag: '1',
+                                    backgroundColor: Colors.white,
+                                    child: Icon(
+                                      Icons.arrow_outward,
+                                      size: 30,
+                                      color: Colors.black,
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        isBack = !isBack;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                Positioned(
+                                  bottom: 60,
+                                  right: 10,
+                                  child: FloatingActionButton(
+                                    heroTag: '2',
+                                    backgroundColor: Colors.white,
+                                    child: Icon(
+                                      Icons.not_interested,
+                                      size: 30,
+                                      color: Colors.black,
+                                    ),
+                                    onPressed: () {
+                                      bloc.add(ChangeClothes(
+                                        selectedClothing:
+                                            SelectedClothing.initial,
+                                      ));
+                                    },
+                                  ),
+                                ),
+                                Positioned(
+                                  bottom: 10,
+                                  child: Column(children: [
+                                    ClothesButton(
+                                      bloc: bloc,
+                                      selectedClothing:
+                                          SelectedClothing.details,
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    ClothesButton(
+                                      bloc: bloc,
+                                      selectedClothing: SelectedClothing.shirt,
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    ClothesButton(
+                                      bloc: bloc,
+                                      selectedClothing: SelectedClothing.pants,
+                                    ),
+                                  ]),
+                                ),
+                              ],
                             ),
-                            Positioned(
-                              bottom: 150,
-                              right: 10,
-                              child: FloatingActionButton(
-                                heroTag: '1',
-                                backgroundColor: Colors.white,
-                                child: Icon(
-                                  Icons.arrow_outward,
-                                  size: 30,
-                                  color: Colors.black,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    isBack = !isBack;
-                                  });
-                                },
-                              ),
-                            ),
-                            Positioned(
-                              bottom: 60,
-                              right: 10,
-                              child: FloatingActionButton(
-                                heroTag: '2',
-                                backgroundColor: Colors.white,
-                                child: Icon(
-                                  Icons.not_interested,
-                                  size: 30,
-                                  color: Colors.black,
-                                ),
-                                onPressed: () {
-                                  bloc.add(ChangeColor(
-                                    selectedClothing: SelectedClothing.initial,
-                                  ));
-                                },
-                              ),
-                            ),
-                            Positioned(
-                              bottom: 10,
-                              child: Column(children: [
-                                ClothesButton(
-                                  bloc: bloc,
-                                  selectedClothing: SelectedClothing.details,
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                ClothesButton(
-                                  bloc: bloc,
-                                  selectedClothing: SelectedClothing.shirt,
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                ClothesButton(
-                                  bloc: bloc,
-                                  selectedClothing: SelectedClothing.pants,
-                                ),
-                              ]),
-                            )
-                          ],
-                        ),
+                          ),
+                          (state.selectedClothing == SelectedClothing.initial)
+                              ? SizedBox.shrink()
+                              : ColorsPanel(),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
+                ],
               ),
-              BlocBuilder<AmboBloc, AmboState>(builder: (context, state) {
-                if (state.selectedClothing == SelectedClothing.initial) {
-                  return SizedBox.shrink();
-                }
-                return ColorsPanel();
-              })
-            ],
-          ),
+            );
+          },
         ),
       ),
     );
@@ -177,7 +188,7 @@ class _AmboScreenState extends State<AmboScreen> {
     required Color pantalonColor,
   }) {
     switch (model) {
-      case Models.juanita:
+      case Models.Juanita:
         return CustomPaint(
           size: Size(width, (width * 3.23151559005394).toDouble()),
           painter: JuanitaGreyDelante(
@@ -187,7 +198,7 @@ class _AmboScreenState extends State<AmboScreen> {
             detalles: detallesColor,
           ),
         );
-      case Models.profesional:
+      case Models.Profesional:
         return CustomPaint(
           size: Size(width, (width * 3.2160278486748743).toDouble()),
           painter: ProfesionalDeltante(
@@ -197,7 +208,7 @@ class _AmboScreenState extends State<AmboScreen> {
             colorDetalle: detallesColor,
           ),
         );
-      case Models.leontina:
+      case Models.Leontina:
         return CustomPaint(
           size: Size(width, (width * 3.4660738738316677).toDouble()),
           painter: LeontinaDelante(
@@ -228,7 +239,7 @@ class _AmboScreenState extends State<AmboScreen> {
     required Color pantalonColor,
   }) {
     switch (model) {
-      case Models.juanita:
+      case Models.Juanita:
         return CustomPaint(
           size: Size(width, (width * 3.2419592840155254).toDouble()),
           painter: JuanitaGreyEspalda(
@@ -237,7 +248,7 @@ class _AmboScreenState extends State<AmboScreen> {
             chaquetaColor: chaquetaColor,
           ),
         );
-      case Models.profesional:
+      case Models.Profesional:
         return CustomPaint(
           size: Size(width, (width * 3.2162606212413505).toDouble()),
           painter: ProfesionalAtras(
@@ -248,7 +259,7 @@ class _AmboScreenState extends State<AmboScreen> {
           ),
         );
 
-      case Models.leontina:
+      case Models.Leontina:
         return CustomPaint(
           size: Size(width, (width * 3.446868688008983).toDouble()),
           painter: LeontinaEspalda(
@@ -318,7 +329,7 @@ class ClothesButton extends StatelessWidget {
                 borderRadius: BorderRadius.all(Radius.circular(16.0)),
               ),
               onPressed: () {
-                bloc.add(ChangeColor(
+                bloc.add(ChangeClothes(
                   selectedClothing: selectedClothing,
                 ));
               },

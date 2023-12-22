@@ -97,4 +97,4 @@ Route createRoute4(Widget widget) {
   );
 }
 
-enum Models { juanita, profesional, leontina }
+enum Models { Juanita, Profesional, Leontina }

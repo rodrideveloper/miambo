@@ -24,9 +24,11 @@ class BuildModel extends StatefulWidget {
 
 class _BuildModelState extends State<BuildModel> {
   double currentPage = 0;
+  late final AmboBloc bloc = context.read<AmboBloc>();
 
   @override
   void initState() {
+    bloc.add(AddModel(widget.model));
     widget.pageController.addListener(() {
       if (mounted) {
         setState(() {
@@ -42,12 +44,7 @@ class _BuildModelState extends State<BuildModel> {
     return GestureDetector(
         onTap: () => Navigator.of(context).push(
               createRoute3(
-                BlocProvider(
-                  create: (context) => AmboBloc(widget.model),
-                  child: AmboScreen(
-                    model: widget.model,
-                  ),
-                ),
+                AmboScreen(),
               ),
             ),
         child: Column(

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:miambo/bloc/bloc/ambo_bloc.dart';
+import 'package:miambo/widgets/custom_colors.dart';
 
 class ColorsPanel extends StatefulWidget {
   ColorsPanel({
@@ -47,29 +49,69 @@ class _ColorsPanelState extends State<ColorsPanel>
     ));
   }
 
-  final List<Color> color1 = [
-    Colors.blue,
-    Colors.blueAccent,
-    Colors.blueGrey,
-    Colors.lightBlue,
-    Colors.lightBlueAccent,
-    Colors.cyan,
-    Colors.cyanAccent,
-    Colors.teal,
-    Colors.teal,
-    Colors.tealAccent
+// 100
+// 104
+// 118
+// 160
+// 238
+// 219
+// 207
+// 235
+// 339
+// 254
+// 382
+// 261
+// 344
+// 378
+// 401
+// 418
+// 450
+// 485
+// 463
+// 730
+// 490
+// 519
+// 549
+// 580
+// 550
+// 603
+// 711
+// 716
+// 750
+// 900
+  final List<CustomColors> color1 = [
+    CustomColors(Colors.white, '100'),
+    CustomColors(Color.fromRGBO(252, 255, 177, 1), '118'),
+    CustomColors(Color.fromRGBO(243, 222, 61, 1), '160'),
+    CustomColors(Color.fromRGBO(239, 112, 21, 1), '238'),
+    CustomColors(Color.fromRGBO(238, 190, 192, 1), '219'),
+    CustomColors(Color.fromRGBO(244, 160, 130, 1), '207'),
+    CustomColors(Color.fromRGBO(242, 133, 211, 1), '235'),
+    CustomColors(Color.fromRGBO(184, 60, 130, 1), '339'),
+    CustomColors(Color.fromRGBO(225, 114, 95, 1), '254'),
+    CustomColors(Color.fromRGBO(86, 16, 6, 1), '382'),
+    CustomColors(Color.fromRGBO(211, 34, 18, 1), '261'),
+    CustomColors(Color.fromRGBO(174, 98, 222, 1), '344'),
+    CustomColors(Color.fromRGBO(81, 12, 160, 1), '378'),
+    CustomColors(Color.fromRGBO(151, 202, 236, 1), '401'),
   ];
 
-  final List<Color> color2 = [
-    Colors.red,
-    Colors.redAccent,
-    Colors.orange,
-    Colors.orangeAccent,
-    Colors.deepOrangeAccent,
-    Colors.amberAccent,
-    Colors.yellowAccent,
-    Colors.yellow,
-    Colors.amber
+  final List<CustomColors> color2 = [
+    CustomColors(Color.fromRGBO(81, 115, 194, 1), '418'),
+    CustomColors(Color.fromRGBO(4, 147, 199, 1), '450'), //ver
+    CustomColors(Color.fromRGBO(21, 48, 186, 1), '485'),
+    CustomColors(Color.fromRGBO(11, 109, 170, 1), '463'),
+    CustomColors(Color.fromRGBO(4, 38, 56, 1), '464'),
+    CustomColors(Color.fromRGBO(1, 3, 61, 1), '490'),
+    CustomColors(Color.fromRGBO(168, 187, 72, 1), '519'),
+    CustomColors(Color.fromRGBO(25, 208, 174, 1), '549'),
+    CustomColors(Color.fromRGBO(12, 33, 1, 1), '580'),
+    CustomColors(Color.fromRGBO(60, 62, 33, 1), '550'),
+    CustomColors(Color.fromRGBO(223, 206, 164, 1), '603'),
+    CustomColors(Color.fromRGBO(162, 160, 160, 1), '711'),
+    CustomColors(Color.fromRGBO(113, 112, 112, 1), '716'),
+    CustomColors(Color.fromRGBO(63, 63, 63, 1), '750'),
+    CustomColors(Color.fromRGBO(0, 0, 0, 1), '900'),
   ];
 
   @override
@@ -90,34 +132,32 @@ class _ColorsPanelState extends State<ColorsPanel>
                 ),
               ),
             ),
-            margin: EdgeInsets.only(top: 30),
-            padding: EdgeInsets.all(8),
-            height: size.height * 0.2,
+            padding: EdgeInsets.symmetric(vertical: 8),
+            height: size.height * 0.25,
             child: Column(
               children: [
-                Container(
-                  height: 50,
-                  child: ColorList(colors: color1),
+                Expanded(
+                  child: Container(
+                    child: ColorList(colors: color2),
+                  ),
                 ),
-                SizedBox(
-                  height: 30,
-                ),
-                Container(
-                  height: 50,
-                  child: ColorList(colors: color2),
+                Expanded(
+                  child: Container(
+                    child: ColorList(colors: color1),
+                  ),
                 ),
               ],
             ),
           ),
-          Align(
-            alignment: Alignment.topCenter,
-            child: SizedBox(
-              width: 50,
-              child: ClipOval(
-                child: Image.asset('assets/images/arciel.png'),
-              ),
-            ),
-          ),
+          // Align(
+          //   alignment: Alignment.topCenter,
+          //   child: SizedBox(
+          //     width: 50,
+          //     child: ClipOval(
+          //       child: Image.asset('assets/images/arciel.png'),
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );
@@ -130,7 +170,7 @@ class ColorList extends StatelessWidget {
     required this.colors,
   });
 
-  final List<Color> colors;
+  final List<CustomColors> colors;
 
   @override
   Widget build(BuildContext context) {
@@ -148,39 +188,39 @@ class ColorList extends StatelessWidget {
           child: BlocBuilder<AmboBloc, AmboState>(
             builder: (context, state) {
               final isSelected = colors[index] == state.selectedColor;
-              return Container(
-                child: ClipOval(
-                  child: Container(
-                    color: colors[index],
-                  ),
-                ),
-                height: 50,
-                width: 50,
-                decoration: isSelected
-                    ? BoxDecoration(
-                        border: Border.all(color: Colors.black, width: 1),
-                        shape: BoxShape.circle,
-                        gradient: RadialGradient(
-                          colors: [
-                            Colors.transparent,
-                            Colors.white.withOpacity(0.5),
-                          ],
-                          stops: [0.5, 1.0],
-                          center: Alignment(0.5, 0.5),
-                          radius: 0.7,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.amberAccent,
-                            blurRadius: 10.0,
-                            spreadRadius: 3.0,
+              return Column(
+                children: [
+                  Container(
+                    child: ClipOval(
+                      child: Stack(
+                        children: [
+                          Container(
+                            color: colors[index].color,
                           ),
+                          isSelected
+                              ? Center(
+                                  child: Icon(
+                                    Icons.check,
+                                    size: 40,
+                                    color: Colors.lightBlueAccent,
+                                  ),
+                                )
+                              : SizedBox.shrink()
                         ],
-                      )
-                    : BoxDecoration(
-                        border: Border.all(color: Colors.black, width: 1),
-                        shape: BoxShape.circle,
                       ),
+                    ),
+                    height: 60,
+                    width: 60,
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text(
+                    '#${colors[index].cod}',
+                    style: GoogleFonts.cinzel(
+                        fontSize: 15, fontWeight: FontWeight.bold),
+                  )
+                ],
               );
             },
           ),

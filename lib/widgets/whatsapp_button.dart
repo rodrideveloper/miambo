@@ -15,20 +15,15 @@ class WhatsappButton extends StatelessWidget {
     return BlocBuilder<AmboBloc, AmboState>(
       builder: (context, state) {
         return SizedBox(
-          width: 150,
           child: MaterialButton(
-            padding: EdgeInsets.all(0),
             child: SvgPicture.asset(
               'assets/svg/whatsapp_button.svg',
-              semanticsLabel: 'My SVG Image',
-              height: 40,
-              width: 60,
             ),
             onPressed: () {
               final link = WhatsAppUnilink(
-                phoneNumber: '5492235207640',
+                phoneNumber: '5492477614405',
                 text:
-                    "Quiero el modelo:${state.model.name}, chaqueta:${state.chaqueta}, pantalón:${state.pantalon}, detalle:${state.detalle}",
+                    "Quiero el modelo:${state.model.name}, color de chaqueta:${state.chaqueta.cod}, color pantalón:${state.pantalon.cod} y  color detalles:${state.detalle.cod}",
               );
 
               launchUrl(link.asUri());

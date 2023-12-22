@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:miambo/model.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:miambo/bloc/bloc/ambo_bloc.dart';
+import 'package:miambo/build_model.dart';
 import 'package:miambo/utils.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -12,18 +14,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: SafeArea(
-        child: Scaffold(
-          body: Center(
-              child: Padding(
-            padding: EdgeInsets.all(20),
-            child: HomeScreen(),
-          )),
-        ),
-      ),
-    );
+    return BlocProvider(
+        create: (context) => AmboBloc(),
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: SafeArea(
+            child: Scaffold(
+              body: Center(
+                  child: Padding(
+                padding: EdgeInsets.all(20),
+                child: HomeScreen(),
+              )),
+            ),
+          ),
+        ));
   }
 }
 
@@ -73,17 +77,17 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             BuildModel(
               modelImage: 'assets/images/juanitaGrey.png',
-              model: Models.juanita,
+              model: Models.Juanita,
               pageController: pageController,
             ),
             BuildModel(
               modelImage: 'assets/images/profesional.png',
-              model: Models.profesional,
+              model: Models.Profesional,
               pageController: pageController,
             ),
             BuildModel(
               modelImage: 'assets/images/leontina.png',
-              model: Models.leontina,
+              model: Models.Leontina,
               pageController: pageController,
             ),
           ],

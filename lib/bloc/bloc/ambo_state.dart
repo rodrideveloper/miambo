@@ -5,11 +5,11 @@ enum SelectedClothing { initial, shirt, pants, details }
 @immutable
 class AmboState extends Equatable {
   final Models model;
-  final Color chaqueta;
-  final Color pantalon;
-  final Color detalle;
+  final CustomColors chaqueta;
+  final CustomColors pantalon;
+  final CustomColors detalle;
   final SelectedClothing selectedClothing;
-  final Color selectedColor;
+  final CustomColors selectedColor;
 
   AmboState({
     required this.model,
@@ -20,12 +20,33 @@ class AmboState extends Equatable {
     required this.selectedColor,
   });
 
+  factory AmboState.init() => AmboState(
+        model: Models.Juanita,
+        selectedColor: CustomColors(
+          Colors.black12,
+          '1',
+        ),
+        selectedClothing: SelectedClothing.initial,
+        chaqueta: CustomColors(
+          Colors.redAccent,
+          '1',
+        ),
+        pantalon: CustomColors(
+          Colors.green,
+          '2',
+        ),
+        detalle: CustomColors(
+          Colors.white,
+          '3',
+        ),
+      );
+
   AmboState copyWith({
-    Color? chaqueta,
-    Color? pantalon,
-    Color? detalle,
+    CustomColors? chaqueta,
+    CustomColors? pantalon,
+    CustomColors? detalle,
     SelectedClothing? selectedClothing,
-    Color? selectedColor,
+    CustomColors? selectedColor,
     Models? model,
   }) {
     return AmboState(
@@ -39,6 +60,12 @@ class AmboState extends Equatable {
   }
 
   @override
-  List<Object?> get props =>
-      [model, selectedColor, selectedClothing, chaqueta, pantalon, detalle];
+  List<Object?> get props => [
+        model,
+        selectedColor,
+        selectedClothing,
+        chaqueta,
+        pantalon,
+        detalle,
+      ];
 }
