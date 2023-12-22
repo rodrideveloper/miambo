@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:miambo/bloc/bloc/ambo_bloc.dart';
+import 'package:Miambo/bloc/bloc/ambo_bloc.dart';
 
-import 'package:miambo/models/juanita_grey/juanita_grey_delante.dart';
-import 'package:miambo/models/juanita_grey/juanita_grey_espalda.dart';
-import 'package:miambo/models/leontina/leontina_deltante.dart';
-import 'package:miambo/models/leontina/leontina_espalda.dart';
-import 'package:miambo/models/profesional/profesional_atras.dart';
-import 'package:miambo/models/profesional/profesional_delante.dart';
-import 'package:miambo/utils.dart';
-import 'package:miambo/widgets/colors_panel.dart';
-import 'package:miambo/widgets/whatsapp_button.dart';
+import 'package:Miambo/models/juanita_grey/juanita_grey_delante.dart';
+import 'package:Miambo/models/juanita_grey/juanita_grey_espalda.dart';
+import 'package:Miambo/models/leontina/leontina_deltante.dart';
+import 'package:Miambo/models/leontina/leontina_espalda.dart';
+import 'package:Miambo/models/profesional/profesional_atras.dart';
+import 'package:Miambo/models/profesional/profesional_delante.dart';
+import 'package:Miambo/utils.dart';
+import 'package:Miambo/widgets/colors_panel.dart';
+import 'package:Miambo/widgets/whatsapp_button.dart';
 
 class AmboScreen extends StatefulWidget {
   AmboScreen({
@@ -44,6 +44,7 @@ class _AmboScreenState extends State<AmboScreen> {
         body: BlocBuilder<AmboBloc, AmboState>(
           builder: (context, state) {
             return Container(
+              color: Colors.white,
               child: Column(
                 children: [
                   Expanded(

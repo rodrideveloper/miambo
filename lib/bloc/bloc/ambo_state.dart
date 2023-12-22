@@ -27,18 +27,9 @@ class AmboState extends Equatable {
           '1',
         ),
         selectedClothing: SelectedClothing.initial,
-        chaqueta: CustomColors(
-          Colors.redAccent,
-          '1',
-        ),
-        pantalon: CustomColors(
-          Colors.green,
-          '2',
-        ),
-        detalle: CustomColors(
-          Colors.white,
-          '3',
-        ),
+        chaqueta: CustomColors(Color.fromRGBO(238, 190, 192, 1), '219'),
+        pantalon: CustomColors(Color.fromRGBO(238, 190, 192, 1), '219'),
+        detalle: CustomColors(Color.fromRGBO(174, 98, 222, 1), '344'),
       );
 
   AmboState copyWith({

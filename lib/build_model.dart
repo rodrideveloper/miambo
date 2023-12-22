@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:miambo/ambo_screen.dart';
-import 'package:miambo/bloc/bloc/ambo_bloc.dart';
-import 'package:miambo/utils.dart';
+import 'package:Miambo/ambo_screen.dart';
+import 'package:Miambo/bloc/bloc/ambo_bloc.dart';
+import 'package:Miambo/utils.dart';
 
 class BuildModel extends StatefulWidget {
   BuildModel({

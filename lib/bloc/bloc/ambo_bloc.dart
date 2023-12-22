@@ -2,8 +2,8 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
-import 'package:miambo/utils.dart';
-import 'package:miambo/widgets/custom_colors.dart';
+import 'package:Miambo/utils.dart';
+import 'package:Miambo/widgets/custom_colors.dart';
 
 part 'ambo_event.dart';
 part 'ambo_state.dart';

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:miambo/bloc/bloc/ambo_bloc.dart';
-import 'package:miambo/widgets/custom_colors.dart';
+import 'package:Miambo/bloc/bloc/ambo_bloc.dart';
+import 'package:Miambo/widgets/custom_colors.dart';
 
 class ColorsPanel extends StatefulWidget {
   ColorsPanel({
@@ -190,35 +190,39 @@ class ColorList extends StatelessWidget {
               final isSelected = colors[index] == state.selectedColor;
               return Column(
                 children: [
-                  Container(
-                    child: ClipOval(
-                      child: Stack(
-                        children: [
-                          Container(
-                            color: colors[index].color,
-                          ),
-                          isSelected
-                              ? Center(
-                                  child: Icon(
-                                    Icons.check,
-                                    size: 40,
-                                    color: Colors.lightBlueAccent,
-                                  ),
-                                )
-                              : SizedBox.shrink()
-                        ],
+                  Expanded(
+                    child: Container(
+                      child: ClipOval(
+                        child: Stack(
+                          children: [
+                            Container(
+                              color: colors[index].color,
+                            ),
+                            isSelected
+                                ? Center(
+                                    child: Icon(
+                                      Icons.check,
+                                      size: 40,
+                                      color: Colors.lightBlueAccent,
+                                    ),
+                                  )
+                                : SizedBox.shrink()
+                          ],
+                        ),
                       ),
+                      height: 60,
+                      width: 60,
                     ),
-                    height: 60,
-                    width: 60,
                   ),
                   SizedBox(
                     height: 5,
                   ),
-                  Text(
-                    '#${colors[index].cod}',
-                    style: GoogleFonts.cinzel(
-                        fontSize: 15, fontWeight: FontWeight.bold),
+                  Expanded(
+                    child: Text(
+                      '#${colors[index].cod}',
+                      style: GoogleFonts.cinzel(
+                          fontSize: 15, fontWeight: FontWeight.bold),
+                    ),
                   )
                 ],
               );

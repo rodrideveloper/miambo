@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:miambo/bloc/bloc/ambo_bloc.dart';
-import 'package:miambo/build_model.dart';
-import 'package:miambo/utils.dart';
+import 'package:Miambo/bloc/bloc/ambo_bloc.dart';
+import 'package:Miambo/build_model.dart';
+import 'package:Miambo/utils.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 void main() {
