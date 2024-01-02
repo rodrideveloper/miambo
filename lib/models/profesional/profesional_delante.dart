@@ -6666,7 +6666,7 @@ class ProfesionalDeltante extends CustomPainter {
     path_82.lineTo(size.width * 0.4261789, size.height * 0.4947329);
 //Bolsillo  //Color(0xff192a48).withOpacity(1.0);
     Paint paint_82_fill = Paint()..style = PaintingStyle.fill;
-    paint_82_fill.color = colorBolsillo;
+    paint_82_fill.color = colorChaqueta;
 
     canvas.drawPath(path_82, paint_82_fill);
 
@@ -6678,7 +6678,7 @@ class ProfesionalDeltante extends CustomPainter {
     path_83.lineTo(size.width * 0.6988288, size.height * 0.4947329);
 
     Paint paint_83_fill = Paint()..style = PaintingStyle.fill;
-    paint_83_fill.color = colorBolsillo; // Color(0xff192a48).withOpacity(1.0);
+    paint_83_fill.color = colorChaqueta; // Color(0xff192a48).withOpacity(1.0);
     canvas.drawPath(path_83, paint_83_fill);
 
     Path path_84 = Path();

@@ -3387,7 +3387,7 @@ class LeontinaEspalda extends CustomPainter {
     path_50.lineTo(size.width * 0.7238934, size.height * 0.5184199);
 
     Paint paint_50_fill = Paint()..style = PaintingStyle.fill;
-    paint_50_fill.color = colorBolsillo; // Color(0xff2d2e30).withOpacity(1.0);
+    paint_50_fill.color = colorChaqueta; // Color(0xff2d2e30).withOpacity(1.0);
     canvas.drawPath(path_50, paint_50_fill);
 
     Path path_51 = Path();

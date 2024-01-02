@@ -21,12 +21,10 @@ class WhatsappButton extends StatelessWidget {
             ),
             onPressed: () {
               final link = WhatsAppUnilink(
-                  phoneNumber: '5492477614405',
-                  text: '¡Hola! Este es un emoji: \u{1F604}'
-
-                  // text:
-                  //     "Quiero el modelo: ${state.model.name}, \n '👚' Chaqueta : #${state.chaqueta.cod} \n color pantalón: #${state.pantalon.cod} \n color detalles: #${state.detalle.cod}",
-                  );
+                phoneNumber: '5492235207640',
+                text:
+                    "Hola, diseñe Mi Ambo! \n Modelo: ${state.model.name}, \n color de chaqueta : #${state.chaqueta.cod} \n color de pantalón: #${state.pantalon.cod} \n color de detalles: #${state.detalle.cod} \n mi nombre es: ",
+              );
 
               launchUrl(link.asUri());
             },
