@@ -62,10 +62,22 @@ class _AmboScreenState extends State<AmboScreen> {
                               children: [
                                 BlocBuilder<AmboBloc, AmboState>(
                                   builder: (context, state) {
-                                    return isBack
-                                        ? Align(
-                                            alignment: Alignment.center,
-                                            child: getModelBack(
+                                    return Align(
+                                      alignment: Alignment.center,
+                                      child: isBack
+                                          ? getModelBack(
+                                              width,
+                                              state.model,
+                                              chaquetaColor:
+                                                  state.chaqueta.color,
+                                              detallesColor:
+                                                  state.detalle.color,
+                                              pantalonColor:
+                                                  state.pantalon.color,
+                                              bolsilloColor:
+                                                  state.detalle.color,
+                                            )
+                                          : getModelFront(
                                               width,
                                               state.model,
                                               chaquetaColor:
@@ -77,22 +89,7 @@ class _AmboScreenState extends State<AmboScreen> {
                                               bolsilloColor:
                                                   state.detalle.color,
                                             ),
-                                          )
-                                        : Align(
-                                            alignment: Alignment.center,
-                                            child: getModelFront(
-                                              width,
-                                              state.model,
-                                              chaquetaColor:
-                                                  state.chaqueta.color,
-                                              detallesColor:
-                                                  state.detalle.color,
-                                              pantalonColor:
-                                                  state.pantalon.color,
-                                              bolsilloColor:
-                                                  state.detalle.color,
-                                            ),
-                                          );
+                                    );
                                   },
                                 ),
                                 Positioned(

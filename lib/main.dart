@@ -4,6 +4,7 @@ import 'package:Miambo/bloc/bloc/ambo_bloc.dart';
 import 'package:Miambo/build_model.dart';
 import 'package:Miambo/utils.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 void main() {
   runApp(MyApp());
@@ -100,6 +101,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 TextStyle(color: Colors.black45, fontWeight: FontWeight.w400),
           ),
         ),
+        SizedBox(
+          height: 10,
+        ),
+        TextButton(
+            onPressed: () {
+              launchUrl(Uri.parse(
+                  'https://ambosmedicos.com.ar/miamboprivacidad.html'));
+            },
+            child: Text(
+              'Política de privacidad',
+              style: TextStyle(fontWeight: FontWeight.w400),
+            ))
       ],
     );
   }
