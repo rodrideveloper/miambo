@@ -1,3 +1,7 @@
+import 'package:Miambo/models/hombre_delante.dart';
+import 'package:Miambo/models/hombre_detras.dart';
+import 'package:Miambo/models/teodora_delante.dart';
+import 'package:Miambo/models/teodora_detras.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -185,6 +189,14 @@ class _AmboScreenState extends State<AmboScreen> {
     required Color detallesColor,
     required Color pantalonColor,
   }) {
+    return CustomPaint(
+      size: Size(width, (width * 2.932289795362933).toDouble()),
+      painter: HombreDelante(
+          // colorChaqueta: chaquetaColor,
+          // colorPantalon: pantalonColor,
+          // colorDetalle: detallesColor,
+          ),
+    );
     switch (model) {
       case Models.Juanita:
         return CustomPaint(
@@ -214,6 +226,15 @@ class _AmboScreenState extends State<AmboScreen> {
             colorPantalon: pantalonColor,
             colorDetalle: detallesColor,
           ),
+        );
+      case Models.Hombre:
+        return CustomPaint(
+          size: Size(width, (width * 2.932285109666944).toDouble()),
+          painter: HombreDelante(
+              // colorChaqueta: chaquetaColor,
+              // colorPantalon: pantalonColor,
+              // colorDetalle: detallesColor,
+              ),
         );
       default:
         return CustomPaint(
