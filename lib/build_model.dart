@@ -1,8 +1,9 @@
+import 'package:Miambo/bloc/handler_bloc/handler_bloc.dart';
+import 'package:Miambo/utils/ambo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:Miambo/ambo_screen.dart';
-import 'package:Miambo/bloc/bloc/ambo_bloc.dart';
 import 'package:Miambo/utils.dart';
 
 class BuildModel extends StatefulWidget {
@@ -14,7 +15,7 @@ class BuildModel extends StatefulWidget {
   });
 
   final String modelImage;
-  final Models model;
+  final Model model;
 
   final pageController;
 
@@ -24,11 +25,10 @@ class BuildModel extends StatefulWidget {
 
 class _BuildModelState extends State<BuildModel> {
   double currentPage = 0;
-  late final AmboBloc bloc = context.read<AmboBloc>();
 
   @override
   void initState() {
-    bloc.add(AddModel(widget.model));
+    context.read<HandlerBloc>().add(SelectedModel(selectedModel: widget.model));
     widget.pageController.addListener(() {
       if (mounted) {
         setState(() {

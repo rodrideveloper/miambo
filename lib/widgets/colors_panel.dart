@@ -1,13 +1,15 @@
+import 'package:Miambo/providers/paleta_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:Miambo/bloc/bloc/ambo_bloc.dart';
+
+import 'package:Miambo/bloc/handler_bloc/handler_bloc.dart';
 import 'package:Miambo/widgets/custom_colors.dart';
 
 class ColorsPanel extends StatefulWidget {
   ColorsPanel({
-    super.key,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<ColorsPanel> createState() => _ColorsPanelState();
@@ -34,52 +36,24 @@ class _ColorsPanelState extends State<ColorsPanel>
   void initState() {
     super.initState();
 
-    // Configurar el controlador de animación
     _controller = AnimationController(
-        vsync: this,
-        duration: Duration(milliseconds: 400),
-        reverseDuration: Duration(seconds: 2));
+      vsync: this,
+      duration: Duration(milliseconds: 400),
+      reverseDuration: Duration(seconds: 2),
+    );
 
     _offsetAnimation = Tween<Offset>(
-      begin: Offset(0.0, 1.0),
+      begin: Offset(-1.0, 0.0),
       end: Offset.zero,
     ).animate(CurvedAnimation(
       parent: _controller,
       curve: Curves.easeInOut,
     ));
+
+    _controller.forward();
   }
 
-// 100
-// 104
-// 118
-// 160
-// 238
-// 219
-// 207
-// 235
-// 339
-// 254
-// 382
-// 261
-// 344
-// 378
-// 401
-// 418
-// 450
-// 485
-// 463
-// 730
-// 490
-// 519
-// 549
-// 580
-// 550
-// 603
-// 711
-// 716
-// 750
-// 900
-  final List<CustomColors> color1 = [
+  final List<CustomColors> colorsList = [
     CustomColors(Colors.white, '100'),
     CustomColors(Color.fromRGBO(252, 255, 177, 1), '118'),
     CustomColors(Color.fromRGBO(243, 222, 61, 1), '160'),
@@ -94,11 +68,8 @@ class _ColorsPanelState extends State<ColorsPanel>
     CustomColors(Color.fromRGBO(174, 98, 222, 1), '344'),
     CustomColors(Color.fromRGBO(81, 12, 160, 1), '378'),
     CustomColors(Color.fromRGBO(151, 202, 236, 1), '401'),
-  ];
-
-  final List<CustomColors> color2 = [
     CustomColors(Color.fromRGBO(81, 115, 194, 1), '418'),
-    CustomColors(Color.fromRGBO(4, 147, 199, 1), '450'), //ver
+    CustomColors(Color.fromRGBO(4, 147, 199, 1), '450'),
     CustomColors(Color.fromRGBO(21, 48, 186, 1), '485'),
     CustomColors(Color.fromRGBO(11, 109, 170, 1), '463'),
     CustomColors(Color.fromRGBO(4, 38, 56, 1), '464'),
@@ -117,48 +88,26 @@ class _ColorsPanelState extends State<ColorsPanel>
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    _controller.forward();
     return SlideTransition(
       position: _offsetAnimation,
-      child: Stack(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.teal[100],
-              border: Border(
-                top: BorderSide(
-                  color: Color.fromARGB(255, 212, 0, 107),
-                  width: 1.0,
+      child: Padding(
+        padding: EdgeInsets.only(right: size.width * 0.5),
+        child: Container(
+          decoration: BoxDecoration(color: Colors.grey[50]),
+          padding: EdgeInsets.symmetric(vertical: 8),
+          height: size.height,
+          child: Column(
+            children: [
+              Expanded(
+                child: GestureDetector(
+                  onHorizontalDragEnd: (details) =>
+                      context.read<PaletaProvider>().openOrClose(),
+                  child: ColorList(colors: colorsList),
                 ),
               ),
-            ),
-            padding: EdgeInsets.symmetric(vertical: 8),
-            height: size.height * 0.25,
-            child: Column(
-              children: [
-                Expanded(
-                  child: Container(
-                    child: ColorList(colors: color2),
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    child: ColorList(colors: color1),
-                  ),
-                ),
-              ],
-            ),
+            ],
           ),
-          // Align(
-          //   alignment: Alignment.topCenter,
-          //   child: SizedBox(
-          //     width: 50,
-          //     child: ClipOval(
-          //       child: Image.asset('assets/images/arciel.png'),
-          //     ),
-          //   ),
-          // ),
-        ],
+        ),
       ),
     );
   }
@@ -166,67 +115,55 @@ class _ColorsPanelState extends State<ColorsPanel>
 
 class ColorList extends StatelessWidget {
   const ColorList({
-    super.key,
+    Key? key,
     required this.colors,
-  });
+  }) : super(key: key);
 
   final List<CustomColors> colors;
 
   @override
   Widget build(BuildContext context) {
-    final bloc = context.read<AmboBloc>();
-
-    return ListView.builder(
-      scrollDirection: Axis.horizontal,
+    return GridView.builder(
+      gridDelegate:
+          SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+      shrinkWrap: true,
+      scrollDirection: Axis.vertical,
       itemCount: colors.length,
       itemBuilder: (context, index) => Padding(
         padding: EdgeInsets.symmetric(horizontal: 10),
         child: GestureDetector(
           onTap: () {
-            bloc.add(ChangeColor(selectedColor: colors[index]));
+            context.read<HandlerBloc>().add(
+                  ChangeColor(
+                    color: colors[index].color,
+                  ),
+                );
           },
-          child: BlocBuilder<AmboBloc, AmboState>(
-            builder: (context, state) {
-              final isSelected = colors[index] == state.selectedColor;
-              return Column(
-                children: [
-                  Expanded(
-                    child: Container(
-                      child: ClipOval(
-                        child: Stack(
-                          children: [
-                            Container(
-                              color: colors[index].color,
-                            ),
-                            isSelected
-                                ? Center(
-                                    child: Icon(
-                                      Icons.check,
-                                      size: 40,
-                                      color: Colors.lightBlueAccent,
-                                    ),
-                                  )
-                                : SizedBox.shrink()
-                          ],
+          child: Column(
+            children: [
+              Column(children: [
+                Container(
+                  height: 60,
+                  width: 60,
+                  child: ClipOval(
+                    child: Stack(
+                      children: [
+                        Container(
+                          color: colors[index].color,
                         ),
-                      ),
-                      height: 60,
-                      width: 60,
+                      ],
                     ),
                   ),
-                  SizedBox(
-                    height: 5,
+                ),
+                Text(
+                  '#${colors[index].cod}',
+                  style: GoogleFonts.cinzel(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
                   ),
-                  Expanded(
-                    child: Text(
-                      '#${colors[index].cod}',
-                      style: GoogleFonts.cinzel(
-                          fontSize: 15, fontWeight: FontWeight.bold),
-                    ),
-                  )
-                ],
-              );
-            },
+                )
+              ])
+            ],
           ),
         ),
       ),

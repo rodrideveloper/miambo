@@ -1,9 +1,12 @@
+import 'package:Miambo/bloc/handler_bloc/handler_bloc.dart';
+import 'package:Miambo/providers/back_provider.dart';
+import 'package:Miambo/providers/paleta_provider.dart';
+import 'package:Miambo/utils/ambo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:Miambo/bloc/bloc/ambo_bloc.dart';
 import 'package:Miambo/build_model.dart';
-import 'package:Miambo/utils.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 void main() {
@@ -15,18 +18,28 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-        create: (context) => AmboBloc(),
+    return MultiBlocProvider(
+        providers: [
+          ChangeNotifierProvider(
+            create: (context) => PaletaProvider(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => BackProvider(),
+          ),
+          BlocProvider(
+            create: (context) => HandlerBloc()..add(LoadSvgEvent()),
+          ),
+        ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           home: SafeArea(
             child: Scaffold(
-              body: Center(
-                  child: Padding(
+                body: Center(
+              child: Padding(
                 padding: EdgeInsets.all(20),
                 child: HomeScreen(),
-              )),
-            ),
+              ),
+            )),
           ),
         ));
   }
@@ -77,18 +90,28 @@ class _HomeScreenState extends State<HomeScreen> {
           controller: pageController,
           children: [
             BuildModel(
-              modelImage: 'assets/images/juanitaGrey.png',
-              model: Models.Juanita,
+              modelImage: 'assets/images/profesional.png',
+              model: Model.donato,
               pageController: pageController,
             ),
             BuildModel(
-              modelImage: 'assets/images/profesional.png',
-              model: Models.Profesional,
+              modelImage: 'assets/images/juanitaGrey.png',
+              model: Model.teodora,
               pageController: pageController,
             ),
             BuildModel(
               modelImage: 'assets/images/leontina.png',
-              model: Models.Leontina,
+              model: Model.leontina,
+              pageController: pageController,
+            ),
+            BuildModel(
+              modelImage: 'assets/images/donato.png',
+              model: Model.donato,
+              pageController: pageController,
+            ),
+            BuildModel(
+              modelImage: 'assets/images/seraphine.png',
+              model: Model.seraphine,
               pageController: pageController,
             ),
           ],
